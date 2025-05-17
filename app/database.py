@@ -10,7 +10,7 @@
 #sessionmaker: a factory function that creates new database sessions (used to interact with the DB).
 #declarative_base: a base class from which all your ORM models will inherit. It keeps track of tables and classes for SQLAlchemy.
 
-from sqlalchemy import create engine
+from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
 
 # This defines the database connection URL.
