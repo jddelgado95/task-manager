@@ -7,7 +7,7 @@
 from sqlalchemy import Column, Integer, String, Date, Boolean
 
 #Import the Base Class: This Base is the base class all ORM models will inherit from so SQLAlchemy can recognize them and map them to tables.
-
+from .database import Base
 #Class will map to a database table. 
 #By inheriting from Base, it tells SQLAlchemy this is a model
 class Task(Base):
