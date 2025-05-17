@@ -4,3 +4,10 @@ Basic Task Manager API project with Python. This is a backend project that cover
 
 To run requirements:
 $ pip install -r requirements.txt
+
+To run the project:
+Use a virtual environment (optional):
+$ pip install virtualenv
+$ python -m venv venv_name
+$ source venv/bin/activate
+$ uvicorn app.main:app --reload
