@@ -1,0 +1,46 @@
+#version of the Docker Compose file format.
+#3.9 is a stable and widely used version.
+#Ensures compatibility with Docker Engine features
+version: "3.9"
+#Defines the individual components (containers) of your app.
+#There are two services here: db (PostgreSQL) and web (FastAPI app)
+services:
+  db:
+    #Uses the official PostgreSQL image from Docker Hub
+    image: postgres
+    #Automatically restarts the container if it crashes or the host reboots
+    restart: always
+    environment:
+      #These environment variables are used by the postgres image to:
+      #Create a default user (postgres)
+      #Set its password
+      #Create a new database called taskdb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: taskdb
+    #Mounts a named volume (postgres_data) so your database persists across container restarts.
+    #Stores data inside the container at /var/lib/postgresql/data
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    #Maps host port 5432 to container port 5432.
+    #Allows you to connect to PostgreSQL from tools like psql, DBeaver, or a local app.
+    ports:
+      - "5432:5432"
+
+  web:
+    #Builds the Docker image for the FastAPI app from the Dockerfile in the current directory (.).
+    build: .
+    #Maps host port 8000 to the container, making your API accessible at http://localhost:8000.
+    ports:
+      - "8000:8000"
+    #Loads environment variables from the local .env file (e.g., database URL, secret key).
+    env_file:
+      - .env
+    #Ensures the db service starts before the web service.
+    depends_on:
+      - db
+
+#Defines the named volume postgres_data that is used to persist PostgreSQL data.
+#Docker will manage this storage for you, and it survives docker-compose down (unless you use --volumes to wipe it).
+volumes:
+  postgres_data:
