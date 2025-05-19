@@ -34,3 +34,14 @@ $ pip install virtualenv
 $ python -m venv venv_name
 $ source venv/bin/activate
 $ uvicorn app.main:app --reload
+
+To run it using Docker:
+$ cd <task-manager>
+$ docker-compose up --build
+
+To test it:
+$ curl -X POST http://localhost:8000/register \
+-H "Content-Type: application/json" \
+-d '{"username": "testuser", "password": "testpass"}'
+
+Or use Postman.
