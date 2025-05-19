@@ -28,3 +28,22 @@ class Task(Base):
     #status: Tracks whether a task is "pending" or "done".
     # -> default="pending": New tasks default to "pending" status.
     status = Column(String, default="pending")  # pending / done
+
+class User(Base):
+    #table name in the database
+    #So this model will map to a SQL table like:
+    #CREATE TABLE users (...);
+    __tablename__ = "users"
+    #Defines a column named id:
+    #Integer: its type in SQL is INTEGER
+    #primary_key=True: this is the table’s primary key (uniquely identifies each row)
+    #index=True: adds a database index to speed up lookups using this field
+    id = Column(Integer, primary_key=True, index=True)
+    #Defines a username column:
+    #String: stored as a string (e.g., VARCHAR)
+    #unique=True: enforces that no two users can have the same username
+    #index=True: makes queries like WHERE username = ? faster
+    username = Column(String, unique=True, index=True)
+    #Stores the hashed version of the user’s password (never store raw passwords!).
+    #String: usually long enough to store bcrypt or similar hashes.
+    hashed_password = Column(String)

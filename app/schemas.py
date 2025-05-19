@@ -36,6 +36,23 @@ class TaskUpdate(TaskBase):
 class TaskResponse(TaskBase):
     id: int
 
+#Input Schema (for registration/login)
+#used for incoming requests — when a client sends user registration or login data.
+#username: str – must be a string
+#password: str – must also be a string
+#Pydantic will automatically validate that both fields are present and of the correct type.
+class UserCreate(BaseModel):
+    username: str
+    password: str
+
+#Output Schema (for responses):
+#ending user data back to the client (e.g., after registering or fetching a profile).
+#Includes the user's id and username
+#Excludes the password for security reasons
+class User(BaseModel):
+    id: int
+    username: str
+
 #This tells Pydantic to read data not just from dicts, but also from ORM objects like SQLAlchemy models.Necessary when returning SQLAlchemy model instances (e.g., Task) in responses.
 class Config:
     orm_mode = True

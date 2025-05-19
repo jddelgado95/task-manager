@@ -2,7 +2,8 @@
 #.models: Your database models (like Task).
 #.schemas: Your Pydantic schemas (like TaskCreate, TaskUpdate) used for validation.
 from sqlalchemy.orm import Session
-from . import models, schemas
+from . import models, schemas, utils, database
+from fastapi import Depends, HTTPException
 
 #Return a list of all tasks.
 #db.query(models.Task): Ask the DB for all Task entries.
@@ -98,3 +99,29 @@ def delete_task(db: Session, task_id: int):
         db.delete(db_task)
         db.commit()
     return db_task
+
+#Register a New User
+#A function that creates a new user in the database.
+#user: schemas.UserCreate → Takes a Pydantic object containing username & password.
+def create_user(user: schemas.UserCreate, db: Session):
+    #Hashes the plain password before storing it
+    hashed_pw = utils.hash_password(user.password)
+    #Creates a new SQLAlchemy User model instance
+    db_user = models.User(username=user.username, hashed_password=hashed_pw)
+    #Adds user to DB session.
+    db.add(db_user)
+    #commit() saves the change in the DB.
+    db.commit()
+#refresh() updates the object with any DB-generated fields (like id, created_at)
+    db.refresh(db_user)
+    #Returns the user object 
+    return db_user
+
+#Lookup by Username
+#Fetches a user record by username.
+#Depends(database.get_db) automatically provides a DB session
+def get_user_by_username(username: str, db: Session = Depends(database.get_db)):
+    #Queries the User table.
+    #Filters where the username matches the provided input.
+    #Returns the first match or None if no user is found.
+    return db.query(models.User).filter(models.User.username == username).first()
