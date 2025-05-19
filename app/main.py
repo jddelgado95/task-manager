@@ -10,12 +10,12 @@ from sqlalchemy.orm import Session
 # ->models contains your SQLAlchemy ORM models (DB tables).
 # ->schemas contains your Pydantic models (data validation/serialization).
 # ->crud contains functions that handle DB operations (Create, Read, Update, Delete).
-from . import models, schemas, crud
+from . import models, schemas, crud, auth
 #SessionLocal is a SQLAlchemy session factory to create DB sessions.
 #engine is the SQLAlchemy engine connected to your database.
 #Base is the base class for your ORM models.
 from .database import SessionLocal, engine, Base
-
+from .schemas import UserCreate, User
 #Creates all tables in the database that are defined by my ORM models if they don’t exist yet.
 #Uses the engine (DB connection) to execute this.
 Base.metadata.create_all(bind=engine)
@@ -86,3 +86,40 @@ def update_task(task_id: int, task: schemas.TaskUpdate, db: Session = Depends(ge
 @app.delete("/tasks/{task_id}")
 def delete_task(task_id: int, db: Session = Depends(get_db)):
     return crud.delete_task(db, task_id)
+
+#User Registration Endpoint
+#@app.post("/register") → This defines a POST route at /register.
+#response_model=User → The response returned will be validated & shaped like the User schema (without password).
+#user: UserCreate → FastAPI expects a JSON body with username and password (validated using the UserCreate schema).
+#crud.create_user(user) → Calls your DB logic to hash the password and store the new user in the database.
+@app.post("/register", response_model=User)
+def register(user: UserCreate):
+    return crud.create_user(user)
+
+# Login Endpoint (JWT)
+#POST request to /login.
+#Expects a JSON body with username and password.
+#Calls auth.authenticate_user() to:
+#Fetch the user from the database.
+#Verify the password using bcrypt.
+#If valid, return a JWT access token like:
+#{
+#  "access_token": "eyJhbGciOi...",
+#  "token_type": "bearer"
+#}
+@app.post("/login")
+def login(user: UserCreate):
+    return auth.authenticate_user(user.username, user.password)
+
+#Protected Route (JWT Required)
+#GET request to /protected.
+#Requires a valid JWT token in the Authorization header:
+#Authorization: Bearer <token>
+#Depends(auth.get_current_user):
+#Decodes the token.
+#Fetches the user from the DB.
+#Raises 401 if invalid.
+#If token is valid, it returns a greeting with the current username.
+@app.get("/protected")
+def protected(current_user: User = Depends(auth.get_current_user)):
+    return {"message": f"Hello, {current_user.username}"}
