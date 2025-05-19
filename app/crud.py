@@ -103,8 +103,7 @@ def delete_task(db: Session, task_id: int):
 #Register a New User
 #A function that creates a new user in the database.
 #user: schemas.UserCreate → Takes a Pydantic object containing username & password.
-#db: Session = Depends(database.get_db) → Automatically injects a DB session.
-def create_user(user: schemas.UserCreate, db: Session = Depends(database.get_db)):
+def create_user(user: schemas.UserCreate, db: Session):
     #Hashes the plain password before storing it
     hashed_pw = utils.hash_password(user.password)
     #Creates a new SQLAlchemy User model instance

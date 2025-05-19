@@ -10,7 +10,7 @@ from sqlalchemy.orm import Session
 # ->models contains your SQLAlchemy ORM models (DB tables).
 # ->schemas contains your Pydantic models (data validation/serialization).
 # ->crud contains functions that handle DB operations (Create, Read, Update, Delete).
-from . import models, schemas, crud, auth
+from . import models, schemas, crud, auth, database
 #SessionLocal is a SQLAlchemy session factory to create DB sessions.
 #engine is the SQLAlchemy engine connected to your database.
 #Base is the base class for your ORM models.
@@ -92,9 +92,9 @@ def delete_task(task_id: int, db: Session = Depends(get_db)):
 #response_model=User → The response returned will be validated & shaped like the User schema (without password).
 #user: UserCreate → FastAPI expects a JSON body with username and password (validated using the UserCreate schema).
 #crud.create_user(user) → Calls your DB logic to hash the password and store the new user in the database.
-@app.post("/register", response_model=User)
-def register(user: UserCreate):
-    return crud.create_user(user)
+@app.post("/register", response_model=schemas.User)
+def register(user: schemas.UserCreate, db: Session = Depends(database.get_db)):
+    return crud.create_user(user, db)
 
 # Login Endpoint (JWT)
 #POST request to /login.
