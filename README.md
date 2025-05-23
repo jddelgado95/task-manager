@@ -27,3 +27,14 @@ Ensures secure and flexible config management, especially in Dockerized apps
 
 To run requirements:
 $ pip install -r requirements.txt
+
+pytest-asyncio
+plugin for pytest that lets you write and run async def test functions
+FastAPI has async routes
+@app.post("/login")
+async def login(...): ...
+
+httpx
+An HTTP client (like requests) that supports both synchronous and asynchronous HTTP calls.
+Works good with FastAPI for testing async endpoints
+Allows sending requests to your API in unit/integration tests
