@@ -50,3 +50,12 @@ DATABASE_URL=postgresql://postgres:postgres@localhost:5432/taskdb
 Or add a separate .env.test or test override logic for local testing.
 
 Option 2: Use SQLite or mock DB for unit tests
+
+To run pytest without docker:
+database.py
+SQLALCHEMY_DATABASE_URL = "sqlite:///.tasks.db"
+engine = create_engine(SQLALCHEMY_DATABASE_URL)
+
+$PYTHONPATH=. pytest
+
+$uvicorn app.main:app --reload
