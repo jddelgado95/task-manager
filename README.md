@@ -51,6 +51,7 @@ Or add a separate .env.test or test override logic for local testing.
 
 Option 2: Use SQLite or mock DB for unit tests
 
+#todo: add logic to run pytest with docker
 To run pytest without docker:
 database.py
 SQLALCHEMY_DATABASE_URL = "sqlite:///.tasks.db"

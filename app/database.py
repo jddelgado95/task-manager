@@ -28,6 +28,7 @@ SQLALCHEMY_DATABASE_URL = "sqlite:///.tasks.db"
 
 #Gets the PostgreSQL connection string from the .env file.
 #Use with docker: 
+#todo: add logic to run pytest with docker
 #SQLALCHEMY_DATABASE_URL = os.getenv("DATABASE_URL")
 
 #Creates a SQLAlchemy engine instance using the DB URL.
