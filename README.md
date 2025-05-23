@@ -38,3 +38,15 @@ httpx
 An HTTP client (like requests) that supports both synchronous and asynchronous HTTP calls.
 Works good with FastAPI for testing async endpoints
 Allows sending requests to your API in unit/integration tests
+
+Troubleshooting:
+When testing:
+ERROR tests/test_auth.py - sqlalchemy.exc.OperationalError: (psycopg2.OperationalError) could not translate host name "db" to address: nodename nor servname provided, or not known
+
+Option 1: Override the DB host in local .env or test config
+Edit your local .env to use localhost instead:
+
+DATABASE_URL=postgresql://postgres:postgres@localhost:5432/taskdb
+Or add a separate .env.test or test override logic for local testing.
+
+Option 2: Use SQLite or mock DB for unit tests
