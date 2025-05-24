@@ -11,7 +11,7 @@
 #declarative_base: a base class from which all your ORM models will inherit. It keeps track of tables and classes for SQLAlchemy.
 
 from sqlalchemy import create_engine
-from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import declarative_base
 from sqlalchemy.orm import sessionmaker
 #os lets you access environment variables.
 #load_dotenv() loads the .env file so environment variables like DATABASE_URL can be used
