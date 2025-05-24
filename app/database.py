@@ -11,7 +11,7 @@
 #declarative_base: a base class from which all your ORM models will inherit. It keeps track of tables and classes for SQLAlchemy.
 
 from sqlalchemy import create_engine
-from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import declarative_base
 from sqlalchemy.orm import sessionmaker
 #os lets you access environment variables.
 #load_dotenv() loads the .env file so environment variables like DATABASE_URL can be used
@@ -23,10 +23,15 @@ load_dotenv()
 # This defines the database connection URL.
 #"sqlite:///.tasks.db" means:Use SQLite. and ./tasks.db is the local file where the DB is stored.
 #If it were PostgreSQL, it might look like: "postgresql://user:password@localhost/dbname"
+#set the DB variable as an environment variable
+DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///.tasks.db")
+#use this without docker
 #SQLALCHEMY_DATABASE_URL = "sqlite:///.tasks.db"
 
 #Gets the PostgreSQL connection string from the .env file.
-SQLALCHEMY_DATABASE_URL = os.getenv("DATABASE_URL")
+#Use with docker: 
+#todo: add logic to run pytest with docker
+#SQLALCHEMY_DATABASE_URL = os.getenv("DATABASE_URL")
 
 #Creates a SQLAlchemy engine instance using the DB URL.
 #connect_args={"check_same_thread": False} is specific to SQLite:It disables SQLite's "single-thread rule" (SQLite is usually restricted to one thread).This is needed when using the database in web frameworks like FastAPI, which uses multiple threads.
@@ -34,6 +39,9 @@ SQLALCHEMY_DATABASE_URL = os.getenv("DATABASE_URL")
 
 #Establishes the connection to the database.
 #The engine is the low-level component that talks to the DB.
+#Use with docker: 
+#engine = create_engine(SQLALCHEMY_DATABASE_URL)
+
 engine = create_engine(SQLALCHEMY_DATABASE_URL)
 
 #Creates a local session factory. Every time you need a DB session, you'll call SessionLocal().
