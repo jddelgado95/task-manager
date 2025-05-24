@@ -23,8 +23,10 @@ load_dotenv()
 # This defines the database connection URL.
 #"sqlite:///.tasks.db" means:Use SQLite. and ./tasks.db is the local file where the DB is stored.
 #If it were PostgreSQL, it might look like: "postgresql://user:password@localhost/dbname"
+#set the DB variable as an environment variable
+DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///.tasks.db")
 #use this without docker
-SQLALCHEMY_DATABASE_URL = "sqlite:///.tasks.db"
+#SQLALCHEMY_DATABASE_URL = "sqlite:///.tasks.db"
 
 #Gets the PostgreSQL connection string from the .env file.
 #Use with docker: 
