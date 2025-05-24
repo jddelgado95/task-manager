@@ -60,3 +60,15 @@ engine = create_engine(SQLALCHEMY_DATABASE_URL)
 $PYTHONPATH=. pytest
 
 $uvicorn app.main:app --reload
+
+OUTPUT log of testing:
+latform darwin -- Python 3.13.3, pytest-8.3.5, pluggy-1.6.0
+rootdir: /Users/juandiegodelgado/learning-sw/python/task-manager
+plugins: anyio-4.9.0, asyncio-0.26.0
+asyncio: mode=Mode.STRICT, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collected 2 items
+
+tests/test_auth.py . [ 50%]
+tests/test_main.py . [100%]
+
+============================================================================================ 2 passed in 0.37s =============================================================================================
