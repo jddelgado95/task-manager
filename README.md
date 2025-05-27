@@ -7,36 +7,39 @@ Basic Task Manager API project with Python. This is a backend project that cover
 ### psycopg2-binary
 
 Purpose: PostgreSQL database driver
--Allows SQLAlchemy to connect to a PostgreSQL database.
--binary version is precompiled for convenience (no need to build from source).
-Help to use PostgreSQL with SQLAlchemy in a Docker environment.
+
+- Allows SQLAlchemy to connect to a PostgreSQL database.
+- Binary version is precompiled for convenience (no need to build from source).
+  Help to use PostgreSQL with SQLAlchemy in a Docker environment.
 
 ### python-jose
 
 Purpose: JSON Web Token (JWT) handling
 Encodes and decodes JWT tokens securely.
 Used for authentication:
--Create access tokens (jwt.encode)
--Verify and extract payload (jwt.decode)
-Powers the login and protected route logic in auth.py.
+
+- Create access tokens (jwt.encode)
+- Verify and extract payload (jwt.decode)
+  Powers the login and protected route logic in auth.py.
 
 ### passlib bcrypt
 
 Purpose: Secure password hashing
--passlib provides a clean API for password hashing. -[bcrypt] installs the bcrypt hashing algorithm, which is strong and widely used.
+
+- passlib provides a clean API for password hashing. -[bcrypt] installs the bcrypt hashing algorithm, which is strong and widely used.
 
 ### python-dotenv
 
 Purpose: Load environment variables from .env files
--Helps keep secrets and config out of source code.
-Ensures secure and flexible config management, especially in Dockerized apps
+
+- Helps keep secrets and config out of source code.
+  Ensures secure and flexible config management, especially in Dockerized apps
 
 ### pytest-asyncio
 
 plugin for pytest that lets you write and run async def test functions
-FastAPI has async routes
-@app.post("/login")
-async def login(...): ...
+
+- FastAPI has async routes
 
 ### httpx
 
@@ -46,14 +49,15 @@ Allows sending requests to your API in unit/integration tests
 
 ## Run instructions:
 
-```
+```bash
 $ pip install -r requirements.txt
 ```
 
-To run the project:
+## Run the project:
+
 Use a virtual environment (optional):
 
-```
+```bash
 $ pip install virtualenv
 $ python -m venv venv_name
 $ source venv/bin/activate
@@ -62,14 +66,14 @@ $ uvicorn app.main:app --reload
 
 To run it using Docker:
 
-```
+```bash
 $ cd <task-manager>
 $ docker-compose up --build
 ```
 
 To test it:
 
-```
+```bash
 $ curl -X POST http://localhost:8000/register \
 -H "Content-Type: application/json" \
 -d '{"username": "testuser", "password": "testpass"}'
@@ -99,11 +103,14 @@ Use SQLite or mock DB for unit tests
 
 ### To run pytest without docker:
 
-```
+```python
 database.py
 SQLALCHEMY_DATABASE_URL = "sqlite:///.tasks.db"
 engine = create_engine(SQLALCHEMY_DATABASE_URL)
 
+```
+
+```bash
 $PYTHONPATH=. pytest
 
 $uvicorn app.main:app --reload
@@ -111,7 +118,7 @@ $uvicorn app.main:app --reload
 
 ### OUTPUT log of testing:
 
-```
+```bash
 latform darwin -- Python 3.13.3, pytest-8.3.5, pluggy-1.6.0
 rootdir: /Users/juandiegodelgado/learning-sw/python/task-manager
 plugins: anyio-4.9.0, asyncio-0.26.0
